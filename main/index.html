@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>订单系统</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        form {
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            width: 100%;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 16px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        button {
+            background-color: #4caf50;
+            color: #fff;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <h1>订单系统</h1>
+
+    <form id="orderForm">
+        <label for="productName">产品名称:</label>
+        <input type="text" id="productName" name="productName" required>
+
+        <label for="quantity">数量:</label>
+        <input type="number" id="quantity" name="quantity" min="1" required>
+
+        <button type="button" onclick="submitOrder()">提交订单</button>
+    </form>
+
+    <script>
+        function submitOrder() {
+            var productName = document.getElementById("productName").value;
+            var quantity = document.getElementById("quantity").value;
+
+            // Create a JSON object with the form data
+            var order = {
+                productName: productName,
+                quantity: quantity
+            };
+
+            // Send the data to the Go server
+            fetch('/submitOrder', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(order),
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+                // You can handle success as needed (e.g., show a success message)
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+                // You can handle errors as needed (e.g., show an error message)
+            });
+        }
+    </script>
+</body>
+</html>
