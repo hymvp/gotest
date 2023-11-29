@@ -14,6 +14,11 @@ type Order struct {
 	Quantity    string `json:"quantity"`
 }
 
+type LoginData struct {
+	Username string `json:"username"`
+	Password string `json:"password"`
+}
+
 var redisClient *redis.Client
 
 func init() {
@@ -42,6 +47,22 @@ func SaveOrderToRedis(order Order) error {
 
 	// 使用 Redis 客户端将订单信息保存到 Redis 中
 	err = redisClient.Set("order:"+order.ProductName, orderJSON, 0).Err()
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func SaveOrderToRedis1(loginData LoginData) error {
+	// 将订单信息转换为 JSON 格式
+	orderJSON, err := json.Marshal(loginData)
+	if err != nil {
+		return err
+	}
+
+	// 使用 Redis 客户端将订单信息保存到 Redis 中
+	err = redisClient.Set("order:"+loginData.Username, orderJSON, 0).Err()
 	if err != nil {
 		return err
 	}

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>登录页面</title>
+    <style>
+        /* Add your login page styles here */
+    </style>
+</head>
+<body>
+    <h1>登录页面</h1>
+
+    <form id="loginForm">
+        <label for="username">用户名:</label>
+        <input type="text" id="username" name="username" required>
+
+        <label for="password">密码:</label>
+        <input type="password" id="password" name="password" required>
+
+        <button type="button" onclick="submitLogin()">登录</button>
+    </form>
+
+    <script>
+        function submitLogin() {
+            var username = document.getElementById("username").value;
+            var password = document.getElementById("password").value;
+
+            // Create a JSON object with the login data
+            var loginData = {
+                username: username,
+                password: password
+            };
+
+            // Send the login data to the server for verification
+            fetch('/submitLogin', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(loginData),
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Login Success:', data);
+                // If login is successful, redirect to the index.html page
+                window.location.href = '/index.html';
+            })
+            .catch((error) => {
+                console.error('Login Error:', error);
+                // Handle login errors (e.g., display an error message)
+            });
+        }
+    </script>
+</body>
+</html>
